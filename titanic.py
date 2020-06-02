@@ -7,10 +7,6 @@ from sklearn.ensemble import RandomForestClassifier
 import pickle
 
 
-train_df = pd.read_csv('train.csv')
-test_df = pd.read_csv('test.csv')
-pred_df = pd.read_csv('predict.csv')
-
 
 def begin():
     global model
@@ -59,6 +55,22 @@ def metrics(test):
 def action(df):
     y_pred = model.predict(df)
     yield y_pred
+
+
+
+if __name__ == "__main__":
+    train_df = pd.read_csv('train.csv')
+    test_df = pd.read_csv('test.csv')
+    pred_df = pd.read_csv('predict.csv')
+
+    train(train_df)
+    begin()
+    for m in metrics(test_df):
+        print(m)
+
+    for a in action(pred_df):
+        print(a)
+
 
 
 
