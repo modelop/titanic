@@ -15,6 +15,7 @@ def begin():
 
 
 def train(train_df):
+    print(train_df.dtypes)
     X_train = train_df.drop('Survived', axis=1)
     y_train = train_df['Survived']
 
@@ -48,14 +49,15 @@ def train(train_df):
     pickle.dump(model, open('model.pkl', 'wb'))
 
 
-def metrics(test):
-    X_test = test.drop('Survived', axis=1)
-    y_test = test['Survived']
+def metrics(df):
+    print(df.dtypes)
+    X_test = df.drop('Survived', axis=1)
+    y_test = df['Survived']
     yield { "ACCURACY": model.score(X_test, y_test)}
 
 
-def action(datum):
-    df = pd.DataFrame(datum, index=[0])
+def action(df):
+    print(df.dtypes)
     y_pred = model.predict(df)
     yield y_pred  #yield one column at a time...
 
