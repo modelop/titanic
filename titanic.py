@@ -43,6 +43,8 @@ def train(train_df):
                           ('classifier', RandomForestClassifier())])
 
     model.fit(X_train, y_train)
+
+    #where do we write this?? s3?  fixed location on contaier?  or get location from env variable?
     pickle.dump(model, open('model.pkl', 'wb'))
 
 
@@ -52,9 +54,11 @@ def metrics(test):
     yield { "ACCURACY": model.score(X_test, y_test)}
 
 
-def action(df):
+def action(datum):
+    df = pd.DataFrame(datum, index=[0])
     y_pred = model.predict(df)
-    yield y_pred
+    yield y_pred  #yield one column at a time...
+
 
 
 
