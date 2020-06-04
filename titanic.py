@@ -15,7 +15,7 @@ def begin():
 
 
 def train(train_df):
-    print(train_df.dtypes)
+
     X_train = train_df.drop('Survived', axis=1)
     y_train = train_df['Survived']
 
@@ -50,19 +50,24 @@ def train(train_df):
 
 
 def metrics(df):
-    print(df.dtypes)
+
     X_test = df.drop('Survived', axis=1)
     y_test = df['Survived']
     yield { "ACCURACY": model.score(X_test, y_test)}
 
 
 def action(df):
-    print(df.dtypes)
+
     y_pred = model.predict(df)
     yield y_pred  #yield one column at a time...
 
 
-
+def predict(X):
+    features = ["PassengerId", "Pclass", "Name", "Sex", "Age", "SibSp", "Parch", "Ticket", "Fare", "Cabin",
+                "Embarked"]
+    df = pd.DataFrame(X, index=[0], columns=features)
+    y_pred = model.predict(df)
+    return y_pred
 
 if __name__ == "__main__":
     train_df = pd.read_csv('train.csv')
@@ -71,6 +76,10 @@ if __name__ == "__main__":
 
     train(train_df)
     begin()
+
+    X = [[519,2,"Bob","male",36.0,1,0,226875,26.0,'C26',"S"]]
+    print(predict(X))
+
     for m in metrics(test_df):
         print(m)
 
