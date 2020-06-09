@@ -56,18 +56,13 @@ def metrics(df):
     yield { "ACCURACY": model.score(X_test, y_test)}
 
 
-def action(df):
-
-    y_pred = model.predict(df)
-    yield y_pred  #yield one column at a time...
-
-
 def predict(X):
-    features = ["PassengerId", "Pclass", "Name", "Sex", "Age", "SibSp", "Parch", "Ticket", "Fare", "Cabin",
-                "Embarked"]
-    df = pd.DataFrame(X, index=[0], columns=features)
+    df = pd.DataFrame(X, index=[0])
     y_pred = model.predict(df)
-    return y_pred
+    for p in y_pred:
+        yield p
+
+
 
 if __name__ == "__main__":
     train_df = pd.read_csv('train.csv')
@@ -83,8 +78,6 @@ if __name__ == "__main__":
     for m in metrics(test_df):
         print(m)
 
-    for a in action(pred_df):
-        print(a)
 
 
 
