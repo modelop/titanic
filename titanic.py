@@ -45,7 +45,6 @@ def train(train_df):
 
     model.fit(X_train, y_train)
 
-    #where do we write this?? s3?  fixed location on contaier?  or get location from env variable?
     pickle.dump(model, open('model.pkl', 'wb'))
 
 
