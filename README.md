@@ -7,6 +7,6 @@
 use test.csv for a metrics job
 use predeict.csv for a scoring job
 
-training does not work yet.
+
 
 
