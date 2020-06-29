@@ -1,3 +1,6 @@
+# fastscore.slot.0: in-use
+# fastscore.slot.1: in-use
+
 import pandas as pd
 from sklearn.pipeline import Pipeline
 from sklearn.impute import SimpleImputer
