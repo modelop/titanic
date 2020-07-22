@@ -63,19 +63,6 @@ def predict(X):
 
 
 
-if __name__ == "__main__":
-    train_df = pd.read_csv('train.csv')
-    test_df = pd.read_csv('test.csv')
-    pred_df = pd.read_csv('predict.csv')
-
-    train(train_df)
-    begin()
-
-    X = [[519,2,"Bob","male",36.0,1,0,226875,26.0,'C26',"S"]]
-    print(predict(X))
-
-    for m in metrics(test_df):
-        print(m)
 
 
 
