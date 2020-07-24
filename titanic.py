@@ -1,4 +1,3 @@
-#fastscore.recordsets.0: true
 
 import pandas as pd
 import numpy as np
@@ -13,10 +12,7 @@ import pickle
 #modelop.init
 def begin():
     global model
-    try:
-        model = pickle.load(open('model.pkl', 'rb'))
-    except FileNotFoundError:
-        pass
+    model = pickle.load(open('model.pkl', 'rb'))
 
 #modelop.train
 def train(train_df):
