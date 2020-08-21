@@ -12,6 +12,28 @@
       </input>
       <output id="output_1" label="passes" name="passes" typeRef="boolean" />
       <output id="OutputClause_05h1co6" label="reason" name="reason" typeRef="string" />
+      <rule id="DecisionRule_01y9p7t">
+        <inputEntry id="UnaryTests_038h697">
+          <text>&gt; 0.8</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_02rem97">
+          <text>true</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0o6kvrd">
+          <text>"model exceeded threshold"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_07hzalb">
+        <inputEntry id="UnaryTests_0b2f52e">
+          <text>&lt;= 0.8</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0h8fvaw">
+          <text>false</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1c73x5t">
+          <text>"model did not meet threshold"</text>
+        </outputEntry>
+      </rule>
       <rule id="DecisionRule_0aznir8">
         <inputEntry id="UnaryTests_1x4xf13">
           <text>&lt;= 0.80</text>
