@@ -7,54 +7,51 @@ from sklearn.ensemble import RandomForestClassifier
 import pickle
 
 
-
+#modelop.init
 def begin():
     global model
     model = pickle.load(open('model.pkl', 'rb'))
 
 
 
+#modelop.train
 def train(train_df):
-
+    numeric_columns = ['PassengerId', 'Survived', 'Pclass','Age', 'SibSp',
+                       'Parch', 'Fare']
+    train_df.replace(to_replace=[None], value=np.nan, inplace=True)
+    train_df[numeric_columns] = train_df.loc[:, numeric_columns] \
+            .apply(pd.to_numeric, errors='coerce')
     X_train = train_df.drop('Survived', axis=1)
     y_train = train_df['Survived']
-
-
     numeric_transformer = Pipeline(steps=[
         ('imputer', SimpleImputer(strategy='mean')),
         ('scaler', StandardScaler())])
-
     categorical_transformer = Pipeline(steps=[
         ('imputer', SimpleImputer(strategy='constant', fill_value='missing')),
         ('onehot', OneHotEncoder(handle_unknown='ignore'))])
-
     numeric_features = X_train.select_dtypes(include=['int64', 'float64']).columns
-
     categorical_features = X_train.select_dtypes(include=['object']).columns
-
-
     preprocessor = ColumnTransformer(
         transformers=[
             ('num', numeric_transformer, numeric_features),
             ('cat', categorical_transformer, categorical_features)])
-
-
-
     model = Pipeline(steps=[('preprocessor', preprocessor),
                           ('classifier', RandomForestClassifier())])
-
     model.fit(X_train, y_train)
 
-    pickle.dump(model, open('model.pkl', 'wb'))
+    #where do we write this?? s3?  fixed location on contaier?  or get location from env variable?
+    with open('outputDir/model.pkl', 'wb') as f:
+        pickle.dump(model, f)
+    pass
 
-
+#modelop.metrics
 def metrics(df):
 
     X_test = df.drop('Survived', axis=1)
     y_test = df['Survived']
     yield { "ACCURACY": model.score(X_test, y_test)}
 
-
+#modelop.score
 def predict(X):
     df = pd.DataFrame(X, index=[0])
     y_pred = model.predict(df)
