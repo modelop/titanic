@@ -45,7 +45,7 @@ def train(train_df):
 
     model.fit(X_train, y_train)
     
-    print("Finished Tarining.\n", flush=True)
+    print("Finished Training.\n", flush=True)
     
     print("Saving trained model: \n", flush=True)
     
