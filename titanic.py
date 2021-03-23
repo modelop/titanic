@@ -25,8 +25,14 @@ def train(train_df):
     
     print("Scope: training function", flush=True)
     
-    numeric_columns = ['PassengerId', 'Survived', 'Pclass','Age', 'SibSp', 
-                       'Parch', 'Fare']
+    print("input_type: ", type(train_df), flush=True)
+    
+    train_df = pd.DataFrame(train_df, index=[0])
+    
+    numeric_columns = [
+        'PassengerId', 'Survived', 'Pclass','Age', 'SibSp', 
+        'Parch', 'Fare'
+    ]
     
     print("Replacing nulls", flush=True)
     
@@ -90,7 +96,7 @@ def metrics(df):
     y_test = df['Survived']
     yield { "ACCURACY": model.score(X_test, y_test)}
 
-#modelop.score
+# modelop.score
 def predict(X):
     df = pd.DataFrame(X, index=[0])
     y_pred = model.predict(df)
