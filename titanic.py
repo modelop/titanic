@@ -9,55 +9,81 @@ from sklearn.ensemble import RandomForestClassifier
 import pickle
 
 
-#modelop.init
+# modelop.init
 def begin():
+    
+    print("Scope: init function", flush=True)
+
     global model
     model = pickle.load(open('model.pkl', 'rb'))
+    
+    print("pkl file loaded to global variable", flush=True)
 
-#modelop.train
+
+# modelop.train
 def train(train_df):
-
+    
+    print("Scope: training function", flush=True)
+    
     numeric_columns = ['PassengerId', 'Survived', 'Pclass','Age', 'SibSp', 
                        'Parch', 'Fare']
+    
+    print("Replacing nulls", flush=True)
+    
     train_df.replace(to_replace=[None], value=np.nan, inplace=True)
     train_df[numeric_columns] = train_df.loc[:, numeric_columns] \
             .apply(pd.to_numeric, errors='coerce')
+    
+    print("Setting y_train and X_train", flush=True)
+    
     X_train = train_df.drop('Survived', axis=1)
     y_train = train_df['Survived']
 
-
+    print("Setting up numeric transformer Pipeline", flush=True)
+    
     numeric_transformer = Pipeline(steps=[
         ('imputer', SimpleImputer(strategy='mean')),
         ('scaler', StandardScaler())])
+
+    print("Setting up categorical transformer Pipeline", flush=True)
 
     categorical_transformer = Pipeline(steps=[
         ('imputer', SimpleImputer(strategy='constant', fill_value='missing')),
         ('onehot', OneHotEncoder(handle_unknown='ignore'))])
 
+    print("Selecting numeric and categorical features by dtype", flush=True)
+    
     numeric_features = X_train.select_dtypes(include=['int64', 'float64']).columns
 
     categorical_features = X_train.select_dtypes(include=['object']).columns
 
-
+    print("Initializing preprocessor", flush=True)
+    
     preprocessor = ColumnTransformer(
         transformers=[
             ('num', numeric_transformer, numeric_features),
             ('cat', categorical_transformer, categorical_features)])
 
 
-
+    print("Initializing model pipeline", flush=True)
+    
     model = Pipeline(steps=[('preprocessor', preprocessor),
                           ('classifier', RandomForestClassifier())])
 
+    print("Fitting model", flush=True)
+    
     model.fit(X_train, y_train)
-
+    
+    print("model fitting complete. Writing .pkl to outputDir", flush=True)
+    
     #where do we write this?? s3?  fixed location on contaier?  or get location from env variable?
     with open('outputDir/model.pkl', 'wb') as f:
         pickle.dump(model, f)
-
+    
+    print("Finished Training. Now exiting train function", flush=True)
     pass
 
-#modelop.metrics
+# modelop.metrics
 def metrics(df):
 
     X_test = df.drop('Survived', axis=1)
@@ -86,10 +112,3 @@ if __name__ == "__main__":
 
     for m in metrics(test_df):
         print(m)
-
-
-
-
-
-
-
