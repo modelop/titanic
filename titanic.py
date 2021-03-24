@@ -20,7 +20,7 @@ def begin():
     print("pkl file loaded to global variable", flush=True)
 
 
-# modelop.train
+# modelop.training
 def train(train_df):
     
     print("Scope: training function", flush=True)
