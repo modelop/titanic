@@ -9,6 +9,7 @@ import pickle
 import logging
 
 logger = logging.getLogger(__name__)
+logging.basicConfig(level="INFO")
 
 
 # modelop.init
