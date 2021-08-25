@@ -1,12 +1,11 @@
 # titanic
 
+A Model to predict likelihood of Survival on board the ill-fated Titanic.
 
-1. on-board model to MOC
-2. map functions.  init->begin, score->predict, metrics->metrics, train->train
+Model code contains scoring (prediction), metrics (accuracy), and training functions.
 
-use test.csv for a metrics job
-use predeict.csv for a scoring job
+Use the model assets as follows:
 
-training does not work yet.
-
-Actually, it does now.
+ - `predict.csv` for a **scoring** job
+ - `test.csv` for a **metrics** job
+ - `train.csv` for a **training** job
