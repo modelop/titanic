@@ -40,9 +40,6 @@ def metrics(df):
 # modelop.train
 def train(train_df):
 
-    # Turn input data into a DataFrame
-    train_df = pandas.DataFrame(train_df).copy()
-
     logger.info("train_df is of shape: %s", train_df.shape)
 
     numeric_columns = [
