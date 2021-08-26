@@ -8,4 +8,4 @@ Use the model assets as follows:
 
  - `predict.csv` for a **scoring** job
  - `test.csv` for a **metrics** job
- - `train.csv` for a **training** job
+ - `train.json` for a **training** job
