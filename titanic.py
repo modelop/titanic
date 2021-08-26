@@ -41,7 +41,7 @@ def metrics(df):
 def train(train_df):
 
     # Turn input data into a DataFrame
-    train_df = pandas.DataFrame(train_df).copy()
+    train_df = pandas.DataFrame(train_df, index=[0]).copy()
 
     logger.info("train_df is of shape: %s", train_df.shape)
 
