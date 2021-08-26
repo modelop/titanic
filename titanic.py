@@ -99,7 +99,7 @@ def train(train_df):
     )
 
     logger.info("Fitting model")
-    model.fit(numpy.array(X_train), numpy.array(y_train))
+    model.fit(X_train, y_train)
 
     # pickle file should be written to outputDir
     logger.info("Model fitting complete. Writing model.pkl to outputDir")
