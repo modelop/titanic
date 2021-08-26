@@ -41,7 +41,7 @@ def metrics(df):
 def train(train_df):
 
     # Turn input data into a DataFrame
-    train_df = pandas.DataFrame(train_df, index=[0]).copy()
+    train_df = pandas.DataFrame(train_df).copy()
 
     logger.info("train_df is of shape: %s", train_df.shape)
 
@@ -99,7 +99,7 @@ def train(train_df):
     )
 
     logger.info("Fitting model")
-    model.fit(X_train, y_train)
+    model.fit(numpy.array(X_train), numpy.array(y_train))
 
     # pickle file should be written to outputDir
     logger.info("Model fitting complete. Writing model.pkl to outputDir")
