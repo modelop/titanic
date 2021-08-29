@@ -1,3 +1,5 @@
+# modelop.recordsets.0: true
+
 import pandas
 import numpy
 from sklearn.pipeline import Pipeline
@@ -31,7 +33,7 @@ def predict(scoring_data):
 
     logger.info("scoring_data is of type: %s", type(scoring_data))
 
-    scoring_df = pandas.DataFrame(scoring_data, index=[0])
+    scoring_df = pandas.DataFrame([scoring_data])
     scoring_df["Prediction"] = model.predict(
         scoring_df[numeric_predictors+categorical_predictors]
     )
