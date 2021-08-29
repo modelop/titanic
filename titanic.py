@@ -22,22 +22,22 @@ def begin():
     logger.info("'RFC_model.pkl' file loaded to global variable 'model'")
 
     global numeric_predictors, categorical_predictors, target_variable
-    numeric_predictors = ["Pclass","Age","SibSp","Parch","Fare"]
+    numeric_predictors = ["Pclass", "Age", "SibSp", "Parch", "Fare"]
     categorical_predictors = ["Sex", "Cabin", "Embarked"]
     target_variable = "Survived"
     logger.info("Variable roles assigned")
 
 
 # modelop.score
-def predict(scoring_data):
+def predict(scoring_df):
 
-    logger.info("scoring_data is of type: %s", type(scoring_data))
+    # The smart-comment # modelop.recordsets.0: true encodes all input CSV data as a DataFrame
+    logger.info("scoring_data is of shape: %s", scoring_df.shape)
 
-    scoring_df = pandas.DataFrame([scoring_data])
     scoring_df["Prediction"] = model.predict(
-        scoring_df[numeric_predictors+categorical_predictors]
+        scoring_df[numeric_predictors + categorical_predictors]
     )
-    yield scoring_df.to_dict(orient='records')
+    yield scoring_df.to_dict(orient="records")
 
 
 # modelop.metrics
@@ -49,7 +49,8 @@ def metrics(metrics_df):
     y_true = metrics_df["Survived"]
     yield {
         "ACCURACY": model.score(
-            X_test[numeric_predictors+categorical_predictors], y_true)
+            X_test[numeric_predictors + categorical_predictors], y_true
+        )
     }
 
 
@@ -57,15 +58,15 @@ def metrics(metrics_df):
 def train(training_df):
 
     logger.info("train_df is of shape: %s", training_df.shape)
-    
-    numeric_predictors = ["Pclass","Age","SibSp","Parch","Fare"]
+
+    numeric_predictors = ["Pclass", "Age", "SibSp", "Parch", "Fare"]
     categorical_predictors = ["Sex", "Cabin", "Embarked"]
     target_variable = "Survived"
 
     training_df = training_df.loc[
-        :, numeric_predictors+categorical_predictors+[target_variable]
+        :, numeric_predictors + categorical_predictors + [target_variable]
     ]
-    
+
     logger.info("Replacing Nulls")
     training_df.replace(to_replace=[None], value=numpy.nan, inplace=True)
     training_df[numeric_predictors] = training_df.loc[:, numeric_predictors].apply(
@@ -102,7 +103,10 @@ def train(training_df):
 
     logger.info("Initializing model pipeline")
     model = Pipeline(
-        steps=[("preprocessor", preprocessor), ("classifier", RandomForestClassifier())]
+        steps=[
+            ("preprocessor", preprocessor),
+            ("classifier", RandomForestClassifier(random_state=42)),
+        ]
     )
 
     logger.info("Fitting model")
