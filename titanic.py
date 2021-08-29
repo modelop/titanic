@@ -38,7 +38,7 @@ def predict(scoring_df):
     scoring_df["Prediction"] = model.predict(
         scoring_df[numeric_predictors + categorical_predictors]
     )
-    yield scoring_df.to_dict(orient="records")
+    yield scoring_df
 
 
 # modelop.metrics
