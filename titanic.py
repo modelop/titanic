@@ -16,7 +16,7 @@ logging.basicConfig(level="INFO")
 def begin():
 
     global model
-    model = pickle.load(open("outputDir/RFC_model.pkl", "rb"))
+    model = pickle.load(open("RFC_model.pkl", "rb"))
     logger.info("'RFC_model.pkl' file loaded to global variable 'model'")
 
     global numeric_predictors, categorical_predictors, target_variable
@@ -59,7 +59,7 @@ def train(training_df):
     numeric_predictors = ["Pclass","Age","SibSp","Parch","Fare"]
     categorical_predictors = ["Sex", "Cabin", "Embarked"]
     target_variable = "Survived"
-    
+
     training_df = training_df.loc[
         :, numeric_predictors+categorical_predictors+[target_variable]
     ]
