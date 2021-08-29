@@ -56,6 +56,10 @@ def train(training_df):
 
     logger.info("train_df is of shape: %s", training_df.shape)
     
+    numeric_predictors = ["Pclass","Age","SibSp","Parch","Fare"]
+    categorical_predictors = ["Sex", "Cabin", "Embarked"]
+    target_variable = "Survived"
+    
     training_df = training_df.loc[
         :, numeric_predictors+categorical_predictors+[target_variable]
     ]
