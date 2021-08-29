@@ -16,51 +16,59 @@ logging.basicConfig(level="INFO")
 def begin():
 
     global model
-    model = pickle.load(open("model.pkl", "rb"))
+    model = pickle.load(open("outputDir/RFC_model.pkl", "rb"))
+    logger.info("'RFC_model.pkl' file loaded to global variable 'model'")
 
-    logger.info("'model.pkl' file loaded to global variable 'model'")
+    global numeric_predictors, categorical_predictors, target_variable
+    numeric_predictors = ["Pclass","Age","SibSp","Parch","Fare"]
+    categorical_predictors = ["Sex", "Cabin", "Embarked"]
+    target_variable = "Survived"
+    logger.info("Variable roles assigned")
 
 
 # modelop.score
-def predict(X):
-    df = pandas.DataFrame(X, index=[0])
-    y_pred = model.predict(df)
-    df["prediction"] = y_pred
-    yield df.to_dict(orient='records')
+def predict(scoring_data):
+
+    logger.info("scoring_data is of type: %s", type(scoring_data))
+
+    scoring_df = pandas.DataFrame(scoring_data, index=[0])
+    scoring_df["Prediction"] = model.predict(
+        scoring_df[numeric_predictors+categorical_predictors]
+    )
+    yield scoring_df.to_dict(orient='records')
 
 
 # modelop.metrics
-def metrics(df):
+def metrics(metrics_df):
 
-    X_test = df.drop("Survived", axis=1)
-    y_test = df["Survived"]
-    yield {"ACCURACY": model.score(X_test, y_test)}
+    logger.info("metrics_df is of shape: %s", metrics_df.shape)
+
+    X_test = metrics_df.drop("Survived", axis=1)
+    y_true = metrics_df["Survived"]
+    yield {
+        "ACCURACY": model.score(
+            X_test[numeric_predictors+categorical_predictors], y_true)
+    }
 
 
 # modelop.train
-def train(train_df):
+def train(training_df):
 
-    logger.info("train_df is of shape: %s", train_df.shape)
-
-    numeric_columns = [
-        "PassengerId",
-        "Survived",
-        "Pclass",
-        "Age",
-        "SibSp",
-        "Parch",
-        "Fare",
+    logger.info("train_df is of shape: %s", training_df.shape)
+    
+    training_df = training_df.loc[
+        :, numeric_predictors+categorical_predictors+[target_variable]
     ]
-
+    
     logger.info("Replacing Nulls")
-    train_df.replace(to_replace=[None], value=numpy.nan, inplace=True)
-    train_df[numeric_columns] = train_df.loc[:, numeric_columns].apply(
+    training_df.replace(to_replace=[None], value=numpy.nan, inplace=True)
+    training_df[numeric_predictors] = training_df.loc[:, numeric_predictors].apply(
         pandas.to_numeric, errors="coerce"
     )
 
     logger.info("Setting 'y_train' and 'X_train'")
-    X_train = train_df.drop("Survived", axis=1)
-    y_train = train_df["Survived"]
+    X_train = training_df.drop("Survived", axis=1)
+    y_train = training_df["Survived"]
 
     logger.info("Setting up numeric transformer Pipeline")
     numeric_transformer = Pipeline(
@@ -78,15 +86,11 @@ def train(train_df):
         ]
     )
 
-    logger.info("Selecting numeric and categorical features by dtype")
-    numeric_features = X_train.select_dtypes(include=["int64", "float64"]).columns
-    categorical_features = X_train.select_dtypes(include=["object"]).columns
-
     logger.info("Initializing preprocessor")
     preprocessor = ColumnTransformer(
         transformers=[
-            ("num", numeric_transformer, numeric_features),
-            ("cat", categorical_transformer, categorical_features),
+            ("num", numeric_transformer, numeric_predictors),
+            ("cat", categorical_transformer, categorical_predictors),
         ]
     )
 
@@ -98,26 +102,10 @@ def train(train_df):
     logger.info("Fitting model")
     model.fit(X_train, y_train)
 
-    # pickle file should be written to outputDir
-    logger.info("Model fitting complete. Writing model.pkl to outputDir")
-    with open("outputDir/model.pkl", "wb") as f:
+    # pickle file should be written to outputDir/
+    logger.info("Model fitting complete. Writing 'RFC_model.pkl' to outputDir/")
+    with open("outputDir/RFC_model.pkl", "wb") as f:
         pickle.dump(model, f)
 
     logger.info("Training Job Complete!")
     pass
-
-
-# For local testing
-if __name__ == "__main__":
-    train_df = pandas.read_csv("train.csv")
-    test_df = pandas.read_csv("test.csv")
-    pred_df = pandas.read_csv("predict.csv")
-
-    train(train_df)
-    begin()
-
-    X = [[519, 2, "Bob", "male", 36.0, 1, 0, 226875, 26.0, "C26", "S"]]
-    print(predict(X))
-
-    for m in metrics(test_df):
-        print(m)

@@ -2,3 +2,6 @@ venv
 .idea/
 
 .vscode/settings.json
+outputDir/model.pkl
+outputDir/RFC_model.pkl
+split.py
