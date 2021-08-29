@@ -25,8 +25,8 @@ def begin():
 def predict(X):
     df = pandas.DataFrame(X, index=[0])
     y_pred = model.predict(df)
-    for p in y_pred:
-        yield p
+    df["prediction"] = y_pred
+    yield df.to_dict(orient='records')
 
 
 # modelop.metrics
