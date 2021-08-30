@@ -1,6 +1,3 @@
-# modelop.schema.0: input_schema.avsc
-# modelop.schema.1: output_schema.avsc
-
 import pandas
 import numpy
 from sklearn.pipeline import Pipeline
@@ -33,7 +30,7 @@ def begin():
 def predict(scoring_data):
 
     scoring_data=pandas.DataFrame([scoring_data])
-    
+
     scoring_data["Prediction"] = model.predict(
         scoring_data[numeric_predictors + categorical_predictors]
     )
