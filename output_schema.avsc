@@ -32,14 +32,11 @@
       },
       {
          "name": "Ticket",
-         "type": ["string", "int"]
+         "type": "string"
       },
       {
          "name": "Fare",
-         "type": [
-            "double",
-            "int"
-         ]
+         "type": "double"
       },
       {
          "name": "Cabin",
