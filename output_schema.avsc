@@ -20,7 +20,7 @@
       },
       {
          "name": "Age",
-         "type": ["int", "double"]
+         "type": ["int", "double", "float"]
       },
       {
          "name": "SibSp",
