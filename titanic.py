@@ -1,3 +1,5 @@
+# modelop.schema.0: input_schema.avsc
+# modelop.schema.1: output_schema.avsc
 # modelop.recordsets.0: true
 # modelop.recordsets.1: true
 
@@ -38,6 +40,7 @@ def predict(scoring_df):
     scoring_df["Prediction"] = model.predict(
         scoring_df[numeric_predictors + categorical_predictors]
     )
+    # The smart-comment # modelop.recordsets.1: true yields a DataFrame as JSON-lines
     yield scoring_df
 
 
