@@ -44,7 +44,7 @@
       },
       {
          "name": "Age",
-         "type": "int",
+         "type": ["int", "double"],
          "dataClass": "numerical",
          "role": "predictor",
          "protectedClass": true,
@@ -74,7 +74,7 @@
       },
       {
          "name": "Ticket",
-         "type": "string",
+         "type": ["string", "int"],
          "dataClass": "categorical",
          "role": "non-predictor",
          "protectedClass": false,

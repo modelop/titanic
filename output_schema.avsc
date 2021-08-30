@@ -20,7 +20,7 @@
       },
       {
          "name": "Age",
-         "type": "int"
+         "type": ["int", "double"]
       },
       {
          "name": "SibSp",
@@ -32,7 +32,7 @@
       },
       {
          "name": "Ticket",
-         "type": "string"
+         "type": ["string", "int"]
       },
       {
          "name": "Fare",
