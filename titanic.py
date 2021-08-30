@@ -40,7 +40,7 @@ def predict(scoring_df):
         scoring_df[numeric_predictors + categorical_predictors]
     )
     # The smart-comment # modelop.recordsets.1: true yields a DataFrame as JSON-lines
-    yield scoring_df.to_dict(orient="records")
+    yield scoring_df.to_dict(orient="records")[0]
 
 
 # modelop.metrics
