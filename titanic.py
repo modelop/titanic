@@ -32,6 +32,8 @@ def begin():
 # modelop.score
 def predict(scoring_data):
 
+    scoring_data=pandas.DataFrame([scoring_data])
+    
     scoring_data["Prediction"] = model.predict(
         scoring_data[numeric_predictors + categorical_predictors]
     )
