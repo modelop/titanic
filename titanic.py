@@ -30,16 +30,12 @@ def begin():
 
 
 # modelop.score
-def predict(scoring_df):
+def predict(scoring_data):
 
-    # The smart-comment # modelop.recordsets.0: true encodes all input CSV data as a DataFrame
-    logger.info("scoring_data is of shape: %s", scoring_df.shape)
-
-    scoring_df["Prediction"] = model.predict(
-        scoring_df[numeric_predictors + categorical_predictors]
+    scoring_data["Prediction"] = model.predict(
+        scoring_data[numeric_predictors + categorical_predictors]
     )
-    # The smart-comment # modelop.recordsets.1: true yields a DataFrame as JSON-lines
-    yield scoring_df.to_dict(orient="records")[0]
+    yield scoring_data.to_dict(orient="records")[0]
 
 
 # modelop.metrics
