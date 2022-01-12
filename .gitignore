@@ -5,3 +5,4 @@ venv
 outputDir/model.pkl
 outputDir/RFC_model.pkl
 split.py
+.python-version
