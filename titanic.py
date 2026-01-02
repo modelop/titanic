@@ -111,7 +111,7 @@ def train(training_df):
 
     # pickle file should be written to outputDir/
     logger.info("Model fitting complete. Writing 'RFC_model.pkl' to outputDir/")
-    with open("outputDir/RFC_model.pkl", "wb") as f:
+    with open("RFC_model.pkl", "wb") as f:
         pickle.dump(model, f)
 
     logger.info("Training Job Complete!")
